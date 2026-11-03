@@ -1,0 +1,120 @@
+<ion-content [scrollY]="false">
+  <app-mapa slot="fixed" (clickMapa)="clickMapa($event)"></app-mapa>
+
+  <!-- Botón volver / ubicarme flotando sobre el mapa -->
+  @if (paso() !== 'inicio') {
+    <button slot="fixed" class="fab izq" (click)="atras()" aria-label="Volver"><ion-icon name="arrow-back"></ion-icon></button>
+  }
+  <button slot="fixed" class="fab der" (click)="ubicarme()" aria-label="Mi ubicación"><ion-icon name="locate"></ion-icon></button>
+
+  @if (eligiendoEnMapa()) {
+    <div slot="fixed" class="banner">Toca el mapa para elegir el {{ campoActivo() }}</div>
+  }
+
+  <section slot="fixed" class="u-sheet">
+    <div class="agarre"></div>
+
+    <!-- ============ PASO 1: Inicio ============ -->
+    @if (paso() === 'inicio') {
+      <h2 class="saludo">Hola{{ primerNombre() ? ', ' + primerNombre() : '' }}</h2>
+
+      <button class="buscador" (click)="abrirBusqueda()">
+        <ion-icon name="search"></ion-icon>
+        <span>¿A dónde vas?</span>
+        <span class="ahora"><ion-icon name="time"></ion-icon> Ahora</span>
+      </button>
+
+      @if (recientes().length) {
+        <div class="lista">
+          @for (r of recientes(); track r.direccion) {
+            <button class="item" (click)="campoActivo.set('destino'); elegir(r)">
+              <span class="ico"><ion-icon name="time-outline"></ion-icon></span>
+              <span class="txt">{{ r.direccion }}</span>
+            </button>
+          }
+        </div>
+      }
+
+      <h3 class="sub">Sugerencias</h3>
+      <div class="sugerencias">
+        @for (t of tipos().slice(0, 4); track t.id) {
+          <button (click)="tipoSel.set(t.id); abrirBusqueda()">
+            <ion-icon [name]="t.icono"></ion-icon>
+            <span>{{ t.nombre }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- ============ PASO 2: Buscar origen / destino ============ -->
+    @if (paso() === 'buscar') {
+      <h2 class="titulo">Planifica tu viaje</h2>
+      <div class="campos u-ruta">
+        <div class="p">
+          <ion-input class="u-input mini" fill="solid" placeholder="Punto de partida"
+            [class.activo]="campoActivo() === 'origen'"
+            [(ngModel)]="textoOrigen" (ionFocus)="campoActivo.set('origen')"
+            (ionInput)="escribir('origen', textoOrigen)" [clearInput]="true"></ion-input>
+        </div>
+        <div class="p fin">
+          <ion-input class="u-input mini" fill="solid" placeholder="¿A dónde vas?"
+            [class.activo]="campoActivo() === 'destino'"
+            [(ngModel)]="textoDestino" (ionFocus)="campoActivo.set('destino')"
+            (ionInput)="escribir('destino', textoDestino)" [clearInput]="true" [autofocus]="true"></ion-input>
+        </div>
+      </div>
+
+      <div class="lista">
+        <button class="item" (click)="activarSeleccionMapa()">
+          <span class="ico"><ion-icon name="map"></ion-icon></span>
+          <span class="txt"><strong>Elegir en el mapa</strong></span>
+        </button>
+        @if (campoActivo() === 'origen') {
+          <button class="item" (click)="ubicarme()">
+            <span class="ico"><ion-icon name="navigate"></ion-icon></span>
+            <span class="txt"><strong>Usar mi ubicación actual</strong></span>
+          </button>
+        }
+        @if (buscando()) {
+          <div class="cargando"><ion-spinner name="dots"></ion-spinner></div>
+        }
+        @for (r of resultados(); track $index) {
+          <button class="item" (click)="elegir(r)">
+            <span class="ico"><ion-icon name="location"></ion-icon></span>
+            <span class="txt">{{ r.direccion }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- ============ PASO 3: Opciones de viaje ============ -->
+    @if (paso() === 'opciones') {
+      <div class="resumen u-small u-muted">
+        {{ ruta()?.km | number: '1.1-1' }} km · {{ ruta()?.min }} min
+      </div>
+
+      <div class="tipos">
+        @for (t of tipos(); track t.id) {
+          <button class="tipo" [class.on]="tipoSel() === t.id" (click)="tipoSel.set(t.id)">
+            <span class="ilus"><ion-icon [name]="t.icono"></ion-icon></span>
+            <span class="info">
+              <strong>{{ t.nombre }} <small><ion-icon name="person"></ion-icon>{{ t.asientos }}</small></strong>
+              <span class="u-small u-muted">{{ llegada(t) }} · {{ t.descripcion }}</span>
+            </span>
+            <span class="precio">{{ precio(t) | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+          </button>
+        }
+      </div>
+
+      <button class="pago" (click)="elegirPago()">
+        <ion-icon [name]="pago() === 'Efectivo' ? 'cash-outline' : pago() === 'Tarjeta' ? 'card-outline' : 'phone-portrait-outline'"></ion-icon>
+        <span>{{ pago() }}</span>
+        <ion-icon name="chevron-forward" class="flecha"></ion-icon>
+      </button>
+
+      <ion-button class="u-btn" expand="block" (click)="confirmar()" [disabled]="pidiendo()">
+        @if (pidiendo()) { <ion-spinner name="crescent"></ion-spinner> } @else { Elegir {{ tipoActual.nombre }} }
+      </ion-button>
+    }
+  </section>
+</ion-content>

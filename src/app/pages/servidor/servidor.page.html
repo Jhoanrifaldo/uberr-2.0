@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login" text="" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Servidor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="wrap u-centro-pagina">
+    <p class="u-muted intro">Dirección del backend Laravel del profesor. Por defecto: <strong>{{ ipPorDefecto }}:8000</strong>.</p>
+
+    <label class="u-label">IP del servidor</label>
+    <ion-input class="u-input" fill="solid" name="host" inputmode="decimal" placeholder="20.20.1.51"
+      [(ngModel)]="form.host" [disabled]="form.usarProxy"></ion-input>
+
+    <div class="dos">
+      <div>
+        <label class="u-label">Puerto</label>
+        <ion-input class="u-input" fill="solid" name="port" type="number" [(ngModel)]="form.port" [disabled]="form.usarProxy"></ion-input>
+      </div>
+      <div>
+        <label class="u-label">Prefijo</label>
+        <ion-input class="u-input" fill="solid" name="prefix" [(ngModel)]="form.prefix"></ion-input>
+      </div>
+    </div>
+
+    <div class="url u-small">
+      <ion-icon name="link-outline"></ion-icon>
+      <code>{{ urlVista }}</code>
+    </div>
+
+    <div class="opcion">
+      <div>
+        <strong>Usar proxy de desarrollo</strong>
+        <p class="u-small u-muted">Actívalo si sale error de CORS. Las peticiones pasan por <code>ionic serve</code> (configurado en proxy.conf.json).</p>
+      </div>
+      <ion-toggle [(ngModel)]="form.usarProxy" color="dark" aria-label="Usar proxy"></ion-toggle>
+    </div>
+
+    <div class="opcion">
+      <div>
+        <strong>Modo demo (sin backend)</strong>
+        <p class="u-small u-muted">Usa datos de ejemplo para mostrar la app aunque el servidor no esté encendido.</p>
+      </div>
+      <ion-toggle [(ngModel)]="form.demo" color="dark" aria-label="Modo demo"></ion-toggle>
+    </div>
+
+    <ion-button class="u-btn u-btn-gris" expand="block" (click)="probar()" [disabled]="probando()">
+      @if (probando()) { <ion-spinner name="crescent"></ion-spinner> } @else {
+        <ion-icon slot="start" name="pulse-outline"></ion-icon> Probar conexión
+      }
+    </ion-button>
+
+    @if (resultado(); as r) {
+      <div class="res" [class.ok]="r.ok">
+        <ion-icon [name]="r.ok ? 'checkmark-circle' : 'close-circle'"></ion-icon>
+        <span>{{ r.detalle }}</span>
+      </div>
+    }
+
+    <ion-button class="u-btn guardar" expand="block" (click)="guardar()">Guardar</ion-button>
+    <ion-button fill="clear" color="medium" expand="block" (click)="restablecer()">Restablecer valores por defecto</ion-button>
+  </div>
+</ion-content>

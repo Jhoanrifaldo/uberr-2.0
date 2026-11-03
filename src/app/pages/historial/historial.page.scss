@@ -1,0 +1,26 @@
+.wrap { padding: 8px 16px 32px; }
+ion-segment { margin: 0 16px 8px; width: auto; }
+
+.vacio {
+  text-align: center; padding: 48px 12px; color: var(--u-texto-2);
+  > ion-icon { font-size: 44px; }
+  p { margin: 10px 0 16px; }
+}
+
+.viaje {
+  width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+  background: none; border: 0; border-bottom: 1px solid var(--u-borde); padding: 14px 0;
+  font: inherit; color: #000; cursor: pointer;
+  .ilus {
+    width: 60px; height: 60px; border-radius: 12px; background: var(--u-gris);
+    display: grid; place-items: center; font-size: 30px; flex: 0 0 auto;
+  }
+  .info { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  strong { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .flecha { color: var(--u-texto-2); }
+  .estado[data-color='success'] { color: var(--ion-color-success); }
+  .estado[data-color='danger'] { color: var(--ion-color-danger); }
+  .estado[data-color='tertiary'] { color: var(--ion-color-secondary); }
+  .estado[data-color='warning'] { color: #a86b00; }
+  .estado[data-color='medium'] { color: var(--u-texto-2); }
+}

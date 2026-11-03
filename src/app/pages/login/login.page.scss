@@ -1,0 +1,31 @@
+.hero {
+  background: #000;
+  color: #fff;
+  padding: calc(16px + var(--ion-safe-area-top, 0px)) 20px 36px;
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
+  .logo { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+  h1 { font-size: 34px; font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; margin: 0; }
+}
+
+.srv {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255, 255, 255, 0.12); color: #fff; border: 0;
+  border-radius: 999px; padding: 8px 12px; font: inherit; font-size: 13px; cursor: pointer;
+  ion-icon { font-size: 16px; }
+}
+
+.form {
+  padding: 28px 20px 40px;
+  h2 { margin-bottom: 20px; }
+}
+
+.o {
+  display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--u-texto-2); font-size: 13px;
+  &::before, &::after { content: ''; flex: 1; height: 1px; background: var(--u-borde); }
+}
+
+.demo {
+  display: flex; gap: 8px; align-items: flex-start; margin-top: 20px;
+  background: #fff8e6; border-radius: 10px; padding: 12px;
+  ion-icon { font-size: 18px; flex: 0 0 auto; }
+}

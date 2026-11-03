@@ -1,0 +1,32 @@
+.wrap { padding: 8px 16px 32px; }
+
+.cabecera {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px;
+  .u-h1 { margin-bottom: 10px; }
+  .u-chip { margin-right: 6px; }
+  .rol { background: #000; color: #fff; }
+}
+.avatar-xl {
+  width: 72px; height: 72px; border-radius: 50%; background: var(--u-gris); color: #000;
+  display: grid; place-items: center; font-size: 30px; font-weight: 700; flex: 0 0 auto;
+}
+
+.atajos {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;
+  button {
+    background: var(--u-gris); border: 0; border-radius: 12px; padding: 16px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font: inherit; font-weight: 600; font-size: 13px; color: #000; cursor: pointer;
+    ion-icon { font-size: 24px; }
+  }
+}
+
+.datos {
+  list-style: none; padding: 0; margin: 8px 0 24px;
+  li {
+    display: flex; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--u-borde);
+    font-size: 15px; word-break: break-all;
+    ion-icon { font-size: 22px; flex: 0 0 auto; }
+    div { display: flex; flex-direction: column; gap: 2px; }
+  }
+}

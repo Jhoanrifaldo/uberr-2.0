@@ -1,0 +1,74 @@
+// Paleta estilo Uber: negro, blanco y grises con un azul de acento.
+:root {
+  --ion-font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --ion-color-primary: #000000;
+  --ion-color-primary-rgb: 0, 0, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #000000;
+  --ion-color-primary-tint: #1f1f1f;
+
+  --ion-color-secondary: #276ef1;
+  --ion-color-secondary-rgb: 39, 110, 241;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #2261d4;
+  --ion-color-secondary-tint: #3d7df2;
+
+  --ion-color-tertiary: #276ef1;
+  --ion-color-tertiary-rgb: 39, 110, 241;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #2261d4;
+  --ion-color-tertiary-tint: #3d7df2;
+
+  --ion-color-success: #05a357;
+  --ion-color-success-rgb: 5, 163, 87;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #04904d;
+  --ion-color-success-tint: #1eac68;
+
+  --ion-color-warning: #ffc043;
+  --ion-color-warning-rgb: 255, 192, 67;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0a93b;
+  --ion-color-warning-tint: #ffc656;
+
+  --ion-color-danger: #e11900;
+  --ion-color-danger-rgb: 225, 25, 0;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c61600;
+  --ion-color-danger-tint: #e4301a;
+
+  --ion-color-medium: #6b6b6b;
+  --ion-color-medium-rgb: 107, 107, 107;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #5e5e5e;
+  --ion-color-medium-tint: #7a7a7a;
+
+  --ion-color-light: #f3f3f3;
+  --ion-color-light-rgb: 243, 243, 243;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d6d6d6;
+  --ion-color-light-tint: #f4f4f4;
+
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --ion-toolbar-background: #ffffff;
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-color-selected: #000000;
+  --ion-tab-bar-color: #8a8a8a;
+
+  // Tokens propios
+  --u-gris: #f3f3f3;
+  --u-gris-2: #e8e8e8;
+  --u-borde: #e2e2e2;
+  --u-texto-2: #5e5e5e;
+  --u-radio: 12px;
+}

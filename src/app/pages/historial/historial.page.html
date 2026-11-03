@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Actividad</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [ngModel]="filtro()" (ngModelChange)="filtro.set($event)" mode="ios">
+      <ion-segment-button value="todos"><ion-label>Todos</ion-label></ion-segment-button>
+      <ion-segment-button value="activos"><ion-label>Activos</ion-label></ion-segment-button>
+      <ion-segment-button value="pasados"><ion-label>Pasados</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="wrap u-centro-pagina">
+    @if (cargando()) {
+      <div class="vacio"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (error()) {
+      <div class="vacio">
+        <ion-icon name="cloud-offline-outline"></ion-icon>
+        <p>{{ error() }}</p>
+        <ion-button class="u-btn u-btn-gris button-small" (click)="cargar()">Reintentar</ion-button>
+      </div>
+    } @else if (!lista().length) {
+      <div class="vacio">
+        <ion-icon name="receipt-outline"></ion-icon>
+        <p>Aún no hay viajes aquí.</p>
+      </div>
+    }
+
+    @for (v of lista(); track v.id) {
+      <button class="viaje" (click)="abrir(v)">
+        <span class="ilus"><ion-icon [name]="icono(v.tipo)"></ion-icon></span>
+        <span class="info">
+          <strong>{{ v.destino.direccion }}</strong>
+          <span class="u-small u-muted">{{ v.created_at | date: "d MMM · h:mm a" }}</span>
+          <span class="u-small">
+            {{ v.tarifa | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+            <span class="estado" [attr.data-color]="ESTADOS[v.estado].color">· {{ ESTADOS[v.estado].texto }}</span>
+          </span>
+        </span>
+        <ion-icon name="chevron-forward" class="flecha"></ion-icon>
+      </button>
+    }
+  </div>
+</ion-content>

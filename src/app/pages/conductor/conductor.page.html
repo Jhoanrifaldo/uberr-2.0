@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Conducir</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="wrap u-centro-pagina">
+    <!-- Interruptor en línea -->
+    <div class="online" [class.on]="enLinea()">
+      <div>
+        <strong>{{ enLinea() ? 'Estás en línea' : 'Estás desconectado' }}</strong>
+        <span>{{ enLinea() ? 'Recibiendo solicitudes de viaje' : 'Conéctate para recibir viajes' }}</span>
+      </div>
+      <ion-toggle [ngModel]="enLinea()" (ngModelChange)="cambiarEnLinea($event)" aria-label="En línea"></ion-toggle>
+    </div>
+
+    <!-- Ganancias -->
+    <div class="ganancias">
+      <div><span class="u-small u-muted">Hoy</span><strong>{{ ganancias().hoy | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong></div>
+      <div><span class="u-small u-muted">Total</span><strong>{{ ganancias().total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong></div>
+      <div><span class="u-small u-muted">Viajes</span><strong>{{ ganancias().viajes }}</strong></div>
+    </div>
+
+    <!-- Viaje activo -->
+    @if (activo(); as a) {
+      <button class="activo" (click)="abrir(a)">
+        <ion-icon name="navigate-circle"></ion-icon>
+        <div>
+          <strong>Tienes un viaje en curso</strong>
+          <span>{{ a.destino.direccion }}</span>
+        </div>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
+    }
+
+    <!-- Solicitudes -->
+    <h2 class="sec">Solicitudes cercanas</h2>
+
+    @if (!enLinea()) {
+      <div class="vacio">
+        <ion-icon name="moon-outline"></ion-icon>
+        <p>Activa «en línea» para ver solicitudes.</p>
+      </div>
+    } @else if (cargando() && !solicitudes().length) {
+      <div class="vacio"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (!solicitudes().length) {
+      <div class="vacio">
+        <div class="radar"><span></span></div>
+        <p>Buscando viajes cerca de ti…</p>
+      </div>
+    }
+
+    @for (s of solicitudes(); track s.id) {
+      <article class="solicitud">
+        <header>
+          <div class="u-chip"><ion-icon name="car-sport"></ion-icon>{{ s.tipo }}</div>
+          <span class="u-small u-muted">{{ hace(s.created_at) }}</span>
+        </header>
+        <div class="precio">{{ s.tarifa | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</div>
+        <div class="u-small u-muted">{{ s.distancia_km | number: '1.1-1' }} km · {{ s.pasajero?.name ?? 'Pasajero' }}
+          @if (s.pasajero?.rating) { · <ion-icon name="star"></ion-icon> {{ s.pasajero?.rating }} }
+        </div>
+        <div class="u-ruta ruta">
+          <div class="p">{{ s.origen.direccion }}</div>
+          <div class="p fin">{{ s.destino.direccion }}</div>
+        </div>
+        <ion-button class="u-btn" expand="block" (click)="aceptar(s)" [disabled]="aceptando() !== null">
+          @if (aceptando() === s.id) { <ion-spinner name="crescent"></ion-spinner> } @else { Aceptar viaje }
+        </ion-button>
+      </article>
+    }
+  </div>
+</ion-content>

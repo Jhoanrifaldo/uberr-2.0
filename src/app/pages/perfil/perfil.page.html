@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="wrap u-centro-pagina">
+    @if (auth.usuario(); as u) {
+      <div class="cabecera">
+        <div>
+          <h1 class="u-h1">{{ u.name }}</h1>
+          <span class="u-chip"><ion-icon name="star"></ion-icon> {{ u.rating ?? 4.9 }}</span>
+          <span class="u-chip rol">{{ u.role === 'conductor' ? 'Conductor' : 'Pasajero' }}</span>
+        </div>
+        <div class="avatar-xl">{{ inicial() }}</div>
+      </div>
+
+      <div class="atajos">
+        <button (click)="abrirEditar()"><ion-icon name="create-outline"></ion-icon><span>Editar</span></button>
+        <button routerLink="/app/historial"><ion-icon name="receipt-outline"></ion-icon><span>Viajes</span></button>
+        <button routerLink="/servidor"><ion-icon name="server-outline"></ion-icon><span>Servidor</span></button>
+      </div>
+
+      <div class="u-sep"></div>
+
+      <ul class="datos">
+        <li><ion-icon name="mail-outline"></ion-icon><div><span class="u-small u-muted">Correo</span>{{ u.email }}</div></li>
+        <li><ion-icon name="call-outline"></ion-icon><div><span class="u-small u-muted">Celular</span>{{ u.phone || 'Sin registrar' }}</div></li>
+        @if (u.vehiculo) {
+          <li><ion-icon name="car-sport-outline"></ion-icon><div><span class="u-small u-muted">Vehículo</span>{{ u.vehiculo.modelo }} · {{ u.vehiculo.color }} · <strong>{{ u.vehiculo.placa }}</strong></div></li>
+        }
+        <li><ion-icon name="link-outline"></ion-icon><div><span class="u-small u-muted">Backend</span>{{ cfg.config().demo ? 'Modo demo' : cfg.baseUrl() }}</div></li>
+      </ul>
+
+      <ion-button class="u-btn u-btn-gris salir" expand="block" (click)="salir()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon> Cerrar sesión
+      </ion-button>
+    }
+  </div>
+
+  <ion-modal [isOpen]="editando()" (didDismiss)="editando.set(false)" [initialBreakpoint]="0.6" [breakpoints]="[0, 0.6, 0.9]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar perfil</ion-title>
+          <ion-buttons slot="end"><ion-button color="dark" (click)="editando.set(false)">Cerrar</ion-button></ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <label class="u-label">Nombre</label>
+        <ion-input class="u-input" fill="solid" [(ngModel)]="form.name"></ion-input>
+        <label class="u-label">Celular</label>
+        <ion-input class="u-input" fill="solid" type="tel" [(ngModel)]="form.phone"></ion-input>
+        <ion-button class="u-btn" expand="block" (click)="guardar()" [disabled]="guardando()">
+          @if (guardando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Guardar }
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

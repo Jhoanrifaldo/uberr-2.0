@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "http://20.20.1.51:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}

@@ -1,0 +1,65 @@
+.fab {
+  position: absolute; top: calc(14px + var(--ion-safe-area-top, 0px)); left: 14px; z-index: 600;
+  width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; color: #000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .18); display: grid; place-items: center; cursor: pointer;
+  ion-icon { font-size: 22px; }
+}
+@media (min-width: 900px) { .fab { left: 440px; } }
+
+.centro { text-align: center; padding: 24px; }
+
+.estado {
+  h2 { font-size: 22px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.01em; }
+  p { margin: 0; }
+}
+
+.pulso {
+  height: 4px; background: var(--u-gris); border-radius: 2px; overflow: hidden; margin: 14px 0 4px;
+  span { display: block; height: 100%; width: 35%; background: #000; animation: barrido 1.3s ease-in-out infinite; }
+}
+@keyframes barrido { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+
+.progreso {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin: 14px 0 6px;
+  span { height: 4px; border-radius: 2px; background: var(--u-gris-2); transition: background .3s; &.on { background: #000; } }
+}
+
+.persona {
+  display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--u-borde);
+  .datos { flex: 1; display: flex; flex-direction: column; gap: 2px; strong { font-size: 16px; } }
+  .placa {
+    text-align: right; display: flex; flex-direction: column;
+    strong { background: var(--u-gris); padding: 4px 8px; border-radius: 6px; font-size: 15px; letter-spacing: 0.06em; }
+  }
+  ion-icon { vertical-align: -2px; }
+}
+
+.contacto {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 4px;
+  .u-btn-link {
+    display: flex; align-items: center; justify-content: center; gap: 8px; height: 44px;
+    background: var(--u-gris); border-radius: 999px; color: #000; text-decoration: none; font-weight: 600; font-size: 14px;
+  }
+}
+
+.detalle { margin: 14px 0; font-size: 15px; .p { padding: 6px 0; } }
+
+.total {
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--u-borde); padding: 14px 0; margin-bottom: 8px;
+  span { color: var(--u-texto-2); font-size: 14px; }
+  strong { font-size: 20px; }
+}
+
+ion-button + ion-button { margin-top: 8px !important; }
+.listo { margin-top: 10px !important; }
+
+.calificar {
+  margin-top: 8px;
+  h3 { font-size: 18px; font-weight: 700; margin: 0 0 10px; text-align: center; }
+  .estrellas {
+    display: flex; justify-content: center; gap: 6px; margin-bottom: 14px;
+    button { background: none; border: 0; padding: 4px; cursor: pointer; color: #000; ion-icon { font-size: 34px; } }
+  }
+}
+.gracias { text-align: center; font-weight: 600; margin: 12px 0; }

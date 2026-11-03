@@ -1,0 +1,43 @@
+<ion-content>
+  <div class="hero">
+    <div class="top">
+      <span class="logo">Uber</span>
+      <button class="srv" routerLink="/servidor" aria-label="Configurar servidor">
+        <ion-icon name="server-outline"></ion-icon>
+        <span>{{ cfg.config().demo ? 'Demo' : cfg.config().host }}</span>
+      </button>
+    </div>
+    <h1>Muévete por tu ciudad<br />cuando quieras.</h1>
+  </div>
+
+  <form class="form u-centro-pagina" (ngSubmit)="entrar()">
+    <h2 class="u-h2">Inicia sesión</h2>
+
+    <label class="u-label" for="email">Correo electrónico</label>
+    <ion-input id="email" class="u-input" fill="solid" type="email" name="email" autocomplete="email"
+      placeholder="nombre@correo.com" [(ngModel)]="email"></ion-input>
+
+    <label class="u-label" for="pass">Contraseña</label>
+    <ion-input id="pass" class="u-input" fill="solid" type="password" name="password" autocomplete="current-password"
+      placeholder="••••••••" [(ngModel)]="password">
+      <ion-input-password-toggle slot="end" color="dark"></ion-input-password-toggle>
+    </ion-input>
+
+    <ion-button class="u-btn" expand="block" type="submit" [disabled]="cargando()">
+      @if (cargando()) { <ion-spinner name="crescent"></ion-spinner> } @else { Continuar }
+    </ion-button>
+
+    <div class="o"><span>o</span></div>
+
+    <ion-button class="u-btn u-btn-gris" expand="block" routerLink="/registro">
+      Crear una cuenta
+    </ion-button>
+
+    @if (cfg.config().demo) {
+      <p class="demo u-small">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Modo demo activo: entra con cualquier correo. Si contiene «conductor» entras como conductor.
+      </p>
+    }
+  </form>
+</ion-content>

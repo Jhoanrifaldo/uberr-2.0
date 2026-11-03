@@ -1,0 +1,119 @@
+<ion-content [scrollY]="false">
+  <app-mapa slot="fixed"></app-mapa>
+
+  <button slot="fixed" class="fab" (click)="salir()" aria-label="Cerrar"><ion-icon name="close"></ion-icon></button>
+
+  <section slot="fixed" class="u-sheet">
+    <div class="agarre"></div>
+
+    @if (error() && !viaje()) {
+      <p class="u-muted">{{ error() }}</p>
+      <ion-button class="u-btn u-btn-gris" expand="block" (click)="salir()">Volver</ion-button>
+    }
+
+    @if (!viaje() && !error()) {
+      <div class="centro"><ion-spinner name="crescent"></ion-spinner></div>
+    }
+
+    @if (viaje(); as v) {
+      <!-- Estado -->
+      <div class="estado">
+        <h2>{{ ESTADOS[v.estado].texto }}</h2>
+        @if (v.estado === 'pendiente') {
+          <p class="u-small u-muted">Estamos conectándote con un conductor cercano…</p>
+          <div class="pulso"><span></span></div>
+        }
+        @if (v.estado === 'en_camino') { <p class="u-small u-muted">Tu conductor llegará en unos minutos.</p> }
+        @if (v.estado === 'en_curso') { <p class="u-small u-muted">Disfruta tu viaje. Llegada estimada pronto.</p> }
+      </div>
+
+      @if (v.estado !== 'cancelado') {
+        <div class="progreso">
+          @for (p of pasos; track p; let i = $index) {
+            <span [class.on]="i <= indice()"></span>
+          }
+        </div>
+      }
+
+      <!-- Conductor (vista pasajero) -->
+      @if (v.conductor && !auth.esConductor()) {
+        <div class="persona">
+          <div class="u-avatar">{{ inicial(v.conductor.name) }}</div>
+          <div class="datos">
+            <strong>{{ v.conductor.name }}</strong>
+            <span class="u-small u-muted"><ion-icon name="star"></ion-icon> {{ v.conductor.rating ?? 4.9 }}</span>
+          </div>
+          @if (v.conductor.vehiculo) {
+            <div class="placa">
+              <strong>{{ v.conductor.vehiculo.placa }}</strong>
+              <span class="u-small u-muted">{{ v.conductor.vehiculo.color }} {{ v.conductor.vehiculo.modelo }}</span>
+            </div>
+          }
+        </div>
+        @if (activo()) {
+          <div class="contacto">
+            <a class="u-btn-link" [href]="'tel:' + (v.conductor.phone ?? '')"><ion-icon name="call"></ion-icon> Llamar</a>
+            <a class="u-btn-link" [href]="'sms:' + (v.conductor.phone ?? '')"><ion-icon name="chatbubble"></ion-icon> Mensaje</a>
+          </div>
+        }
+      }
+
+      <!-- Pasajero (vista conductor) -->
+      @if (auth.esConductor() && v.pasajero) {
+        <div class="persona">
+          <div class="u-avatar">{{ inicial(v.pasajero.name) }}</div>
+          <div class="datos">
+            <strong>{{ v.pasajero.name }}</strong>
+            <span class="u-small u-muted"><ion-icon name="star"></ion-icon> {{ v.pasajero.rating ?? 4.9 }}</span>
+          </div>
+        </div>
+      }
+
+      <!-- Ruta y precio -->
+      <div class="u-ruta detalle">
+        <div class="p"><span class="u-small u-muted">Recogida</span><br />{{ v.origen.direccion }}</div>
+        <div class="p fin"><span class="u-small u-muted">Destino</span><br />{{ v.destino.direccion }}</div>
+      </div>
+
+      <div class="total">
+        <span>{{ v.tipo | uppercase }} · {{ v.distancia_km | number: '1.1-1' }} km</span>
+        <strong>{{ v.tarifa | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
+      </div>
+
+      <!-- Acciones -->
+      @if (auth.esConductor() && siguienteConductor(); as s) {
+        <ion-button class="u-btn" expand="block" (click)="avanzar(s.estado)" [disabled]="accion()">
+          @if (accion()) { <ion-spinner name="crescent"></ion-spinner> } @else { {{ s.texto }} }
+        </ion-button>
+      }
+
+      @if (!auth.esConductor() && puedeCancelar()) {
+        <ion-button class="u-btn u-btn-gris" expand="block" (click)="cancelar()" [disabled]="accion()">Cancelar viaje</ion-button>
+      }
+
+      <!-- Calificar al terminar -->
+      @if (v.estado === 'finalizado' && !auth.esConductor()) {
+        @if (!calificado() && !v.calificacion) {
+          <div class="calificar">
+            <h3>¿Cómo estuvo tu viaje?</h3>
+            <div class="estrellas">
+              @for (n of [1, 2, 3, 4, 5]; track n) {
+                <button (click)="estrellas.set(n)" [attr.aria-label]="n + ' estrellas'">
+                  <ion-icon [name]="n <= estrellas() ? 'star' : 'star-outline'"></ion-icon>
+                </button>
+              }
+            </div>
+            <ion-textarea class="u-input" fill="solid" placeholder="Deja un comentario (opcional)" [(ngModel)]="comentario" [autoGrow]="true"></ion-textarea>
+            <ion-button class="u-btn" expand="block" (click)="enviarCalificacion()" [disabled]="!estrellas() || accion()">Enviar</ion-button>
+          </div>
+        } @else {
+          <p class="gracias">¡Gracias por viajar con nosotros!</p>
+        }
+      }
+
+      @if (!activo()) {
+        <ion-button class="u-btn u-btn-gris listo" expand="block" (click)="salir()">Listo</ion-button>
+      }
+    }
+  </section>
+</ion-content>
